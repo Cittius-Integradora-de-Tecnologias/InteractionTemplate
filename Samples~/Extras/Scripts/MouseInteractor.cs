@@ -16,17 +16,22 @@ namespace HotQueen.Interaction
 
             Move();
             InputInteraction(hitInfo);
-            InputActivate();
+            InputActivate(hitInfo);
         }
 
-        private void InputActivate()
+        private void InputActivate(RaycastHit hitInfo)
         {
-            //Activate
-            if (Input.GetMouseButtonDown(1))
+            //Interact
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                interactor.Activate();
+
+                if (hitInfo.collider.attachedRigidbody
+                    && hitInfo.collider.attachedRigidbody.TryGetComponent<InteractBase>(out InteractBase interact))
+                {
+                    interactor.Activate(interact);
+                }
             }
-            else if (Input.GetMouseButtonUp(1))
+            else if (Input.GetKeyUp(KeyCode.E))
             {
                 interactor.CancelActivate();
             }
@@ -43,12 +48,10 @@ namespace HotQueen.Interaction
                 {
                     interactor.Interact(interact);
                 }
-
-
             }
             else if (Input.GetMouseButtonUp(0))
             {
-                interactor.CancelInteract();
+                interactor.CancelInteraction();
             }
         }
 
@@ -57,6 +60,7 @@ namespace HotQueen.Interaction
             Vector3 direction = new Vector3();
             direction.x = Input.GetAxis("Horizontal");
             direction.z = Input.GetAxis("Vertical");
+            direction.y = Input.mouseScrollDelta.y;
 
             this.transform.position += direction * moveSpeed;
         }

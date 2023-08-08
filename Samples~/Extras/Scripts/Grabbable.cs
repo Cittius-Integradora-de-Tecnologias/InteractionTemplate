@@ -3,14 +3,17 @@ using UnityEngine.Events;
 
 namespace HotQueen.Interaction
 {
+    [RequireComponent(typeof(Rigidbody))]
     public class Grabbable : InteractBase
     {
-        public UnityEvent<GrabArg> OnGripped;
+        private Rigidbody rb;
+        public UnityEvent<GrabArg> OnGrabbed;
         public UnityEvent<GrabArg> OnDropped;
         private Transform attach;
 
         private void Start()
         {
+            rb = GetComponent<Rigidbody>();
             interacted += (ctx) =>
             {
                 if (ctx.interactor.TryGetComponent<Interactor>(out Interactor grabber))
@@ -31,11 +34,13 @@ namespace HotQueen.Interaction
         private void Grab(GrabArg args)
         {
             attach = args.grabber.attach;
-            OnGripped?.Invoke(args);
+            rb.isKinematic = true;
+            OnGrabbed?.Invoke(args);
         }
         private void Drop(GrabArg args)
         {
             attach = null;
+            rb.isKinematic = false;
             OnDropped?.Invoke(args);
         }
         public void Update()
