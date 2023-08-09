@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace HotQueen.Interaction
+namespace Cittius.Interaction
 {
     public interface IInteract
     {

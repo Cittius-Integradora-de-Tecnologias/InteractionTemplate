@@ -1,4 +1,4 @@
-﻿namespace HotQueen.Interaction
+﻿namespace Cittius.Interaction
 {
     public struct GrabArg
     {

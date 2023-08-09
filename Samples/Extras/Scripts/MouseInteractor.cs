@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace HotQueen.Interaction
+namespace Cittius.Interaction
 {
     public class MouseInteractor : MonoBehaviour
     {

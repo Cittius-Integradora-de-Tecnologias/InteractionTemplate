@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace HotQueen.Interaction
+namespace Cittius.Interaction
 {
     public class InteractBase : MonoBehaviour, IInteract, IActivate
     {

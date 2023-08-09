@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace HotQueen.Interaction
+namespace Cittius.Interaction
 {
     public static class InteractionManager
     {
@@ -107,7 +107,7 @@ namespace HotQueen.Interaction
         }
 
         /// <summary>
-        /// Return all the <param name="interactor"></param> interactions
+        /// Return all the <param name="interactor"></param> activations
         /// </summary>
         public static IActivate FindActivity(Interactor interactor)
         {
@@ -118,11 +118,11 @@ namespace HotQueen.Interaction
                     return item.activated;
                 }
             }
-            return null;
+         return null;
         }
 
         /// <summary>
-        /// Return all the <param name="interactor"></param> interactions
+        /// Return all the <param name="interactBase"></param> interactors
         /// </summary>
         public static Interactor FindInteractor(InteractBase interactBase)
         {
