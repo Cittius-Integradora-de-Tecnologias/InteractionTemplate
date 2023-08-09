@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace HotQueen.Interaction
+namespace Cittius.Interaction
 {
     [RequireComponent(typeof(Rigidbody))]
     public class Grabbable : InteractBase

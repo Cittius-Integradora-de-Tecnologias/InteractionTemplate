@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HotQueen.Interaction
+namespace Cittius.Interaction
 {
     public interface IActivate
     {
