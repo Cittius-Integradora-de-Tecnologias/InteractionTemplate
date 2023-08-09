@@ -1,6 +1,6 @@
 {
     "name": "com.hotqueen.interactiontemplate",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "displayName": "Interaction Template",
     "description": "Simple interaction tamplate to be used in Hotqueen projects",
     "unity": "2021.3",
