@@ -39,7 +39,6 @@ namespace Cittius.Interaction
         [Header("Recipient Events")]
         public UnityEvent<RecipientContent> onAdded;
 
-
         private Coroutine tranferenceCoroutine;
         private void Start()
         {
@@ -64,6 +63,10 @@ namespace Cittius.Interaction
                 while (true)
                 {
                     ReceiveTransference(recipient, transferenceAmount);
+                    if (this.gameObject.TryGetComponent(out LiquidControl liquidControl))
+                    {
+                        liquidControl.ToFill(transferenceAmount, maxLimite);
+                    }
                     yield return new WaitForSeconds(delay);
                 }
             }
