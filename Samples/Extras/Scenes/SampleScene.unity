@@ -340,6 +340,10 @@ PrefabInstance:
       propertyPath: onAdded.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8176551182408735617, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
+      propertyPath: m_Constraints
+      value: 126
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
 --- !u!1 &577681056
@@ -704,8 +708,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 6d851b7cf7c918e4abb5292d510202f9, type: 2}
     - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
+      propertyPath: m_storedContents.Array.data[1].content
+      value: 
+      objectReference: {fileID: 11400000, guid: 6d851b7cf7c918e4abb5292d510202f9, type: 2}
+    - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
       propertyPath: m_storedContents.Array.data[0].quantity
-      value: 20
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
+      propertyPath: m_storedContents.Array.data[1].quantity
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7815072521142543779, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
       propertyPath: mesurementPos.y

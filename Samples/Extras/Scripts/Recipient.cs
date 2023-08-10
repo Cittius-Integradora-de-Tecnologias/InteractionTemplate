@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -31,24 +32,26 @@ namespace Cittius.Interaction
         public bool canBeAdded = false;
         public bool isInfinite = false;
         public bool havaLimit = true;
+        public int transferenceAmount = 10;
         public int maxLimite = 1000; //1000 == 1L
 
 
         [Header("Recipient Events")]
         public UnityEvent<RecipientContent> onAdded;
 
+
+        private Coroutine tranferenceCoroutine;
         private void Start()
         {
             interact = this.gameObject.GetComponent<InteractBase>();
-            interact.activated += Transfer;
+            interact.activated += (arg) =>
+            {
+                tranferenceCoroutine = StartCoroutine(InitTransference(arg, 1f));
+            };
+            interact.deactivated += StopTransference;
         }
 
-        /// <summary>
-        /// By defualt is called when this Object is grabbed by a interactor and interacted with another recipient, 
-        /// this method will try to transfer it first content to all activated recipients
-        /// </summary>
-        /// <param name="args"></param>
-        public void Transfer(ActivateArg args)
+        private IEnumerator InitTransference(ActivateArg args, float delay)
         {
             IInteract interact = InteractionManager.FindInteraction(args.interactor);
             if (
@@ -57,13 +60,36 @@ namespace Cittius.Interaction
                 && recipient.storedContents.Count > 0
                )
             {
-
-                RecipientContent repContent = recipient.m_storedContents.Last();
-                if (recipient.TryRemoveContent(repContent.content, false, 10))
+                while (true)
                 {
-                    TryAddContent(repContent);
+                    ReceiveTransference(recipient, transferenceAmount);
+                    yield return new WaitForSeconds(delay);
                 }
-                return;
+            }
+            yield return null;
+        }
+
+        private void StopTransference(ActivateArg obj)
+        {
+            StopCoroutine(tranferenceCoroutine);
+        }
+
+
+
+        /// <summary>
+        /// By defualt is called when this Object is grabbed by a interactor and interacted with another recipient, 
+        /// this method will try to transfer it first content to all activated recipients
+        /// </summary>
+        /// <param name="args"></param>
+        public void ReceiveTransference(Recipient other, int transferenceAmount)
+        {
+            if (other.m_storedContents.Count() > 0)
+            {
+                RecipientContent repContent = other.m_storedContents.Last();
+                if (other.TryRemoveContent(repContent.content, false, transferenceAmount))
+                {
+                    TryAddContent(repContent.content, transferenceAmount);
+                }
             }
         }
 
@@ -80,14 +106,12 @@ namespace Cittius.Interaction
         /// </summary>
         /// <param name="recipientData"></param>
         /// <returns></returns>
-        public bool TryAddContent(RecipientContent recipientData)
+        public bool TryAddContent(ContentData recipientData, int quantity = 20)
         {
-            if (canBeAdded && GetQuantity() + recipientData.quantity < maxLimite)
+            if (canBeAdded && GetQuantity() + quantity < maxLimite)
             {
-                AddContent(recipientData);
-                onAdded?.Invoke(recipientData);
-                Debug.Log(this.transform.name + " Filled with " + recipientData.content.name);
-                Debug.Log(this.transform.name + " have " + GetQuantity() + "ml");
+                AddContent(recipientData, quantity);
+
                 return true;
             }
             else
@@ -136,19 +160,37 @@ namespace Cittius.Interaction
         /// If registered the quanity will me added.
         /// </summary>
         /// <param name="content"></param>
-        private void AddContent(RecipientContent content)
+        private void AddContent(ContentData content, int quantity)
+        {
+
+            RecipientContent recipientContent = new RecipientContent(content, quantity);
+            if (!TryIncrement(recipientContent))
+            {
+                m_storedContents.Add(recipientContent);
+            }
+
+            onAdded?.Invoke(recipientContent);
+            Debug.Log(this.transform.name + " Filled with " + recipientContent.content.name);
+            Debug.Log(this.transform.name + " have " + GetQuantity() + "ml");
+
+        }
+
+        public bool TryIncrement(RecipientContent n_content)
         {
             RecipientContent[] contents = this.m_storedContents.ToArray();
+            RecipientContent l_content = new RecipientContent();
             for (int i = 0; i < contents.Length; i++)
             {
-                if (contents[i].content.name == content.content.name)// contains 
+                l_content = contents.ElementAt(i);
+                if (l_content.content.name == n_content.content.name)// contains 
                 {
-                    contents[i] = new RecipientContent(contents[i].content, contents[i].quantity += content.quantity);
+                    l_content = new RecipientContent(l_content.content, l_content.quantity += n_content.quantity);
+                    contents[i] = l_content;
                     m_storedContents = contents.ToList();
-                    return;
+                    return true;
                 }
             }
-            m_storedContents.Add(content);
+            return false;
         }
 
         /// <summary>
