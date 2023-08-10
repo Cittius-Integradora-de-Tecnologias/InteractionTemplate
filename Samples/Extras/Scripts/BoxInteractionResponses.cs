@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-namespace Cittius.Interaction
+namespace Cittius.Interaction.Extras
 {
     public class BoxInteractionResponses : MonoBehaviour
     {

@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Cittius.Interaction
+﻿namespace Cittius.Interaction
 {
     public struct ActivateArg
     {

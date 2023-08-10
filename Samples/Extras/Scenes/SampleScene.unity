@@ -182,6 +182,22 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 126
       objectReference: {fileID: 0}
+    - target: {fileID: 5203277306619266513, guid: de45167f7acdfbf40a7bd3793a67b1d4, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882851370242044361, guid: de45167f7acdfbf40a7bd3793a67b1d4, type: 3}
+      propertyPath: m_storedContents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882851370242044361, guid: de45167f7acdfbf40a7bd3793a67b1d4, type: 3}
+      propertyPath: m_storedContents.Array.data[0].content
+      value: 
+      objectReference: {fileID: 11400000, guid: 6d851b7cf7c918e4abb5292d510202f9, type: 2}
+    - target: {fileID: 8882851370242044361, guid: de45167f7acdfbf40a7bd3793a67b1d4, type: 3}
+      propertyPath: m_storedContents.Array.data[0].quantity
+      value: 200
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de45167f7acdfbf40a7bd3793a67b1d4, type: 3}
 --- !u!4 &281767438 stripped
@@ -618,6 +634,22 @@ PrefabInstance:
     - target: {fileID: 1090059506250832318, guid: de45167f7acdfbf40a7bd3793a67b1d4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203277306619266513, guid: de45167f7acdfbf40a7bd3793a67b1d4, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882851370242044361, guid: de45167f7acdfbf40a7bd3793a67b1d4, type: 3}
+      propertyPath: m_storedContents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882851370242044361, guid: de45167f7acdfbf40a7bd3793a67b1d4, type: 3}
+      propertyPath: m_storedContents.Array.data[0].content
+      value: 
+      objectReference: {fileID: 11400000, guid: 6d851b7cf7c918e4abb5292d510202f9, type: 2}
+    - target: {fileID: 8882851370242044361, guid: de45167f7acdfbf40a7bd3793a67b1d4, type: 3}
+      propertyPath: m_storedContents.Array.data[0].quantity
+      value: 500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de45167f7acdfbf40a7bd3793a67b1d4, type: 3}

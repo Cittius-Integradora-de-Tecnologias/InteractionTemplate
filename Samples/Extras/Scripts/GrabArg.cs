@@ -1,4 +1,4 @@
-﻿namespace Cittius.Interaction
+﻿namespace Cittius.Interaction.Extras
 {
     public struct GrabArg
     {

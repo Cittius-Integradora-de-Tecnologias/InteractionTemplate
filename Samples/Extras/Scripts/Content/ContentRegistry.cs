@@ -1,28 +1,33 @@
 using System.Collections.Generic;
 
-public static class ContentRegistry
+namespace Cittius.Interaction.Extras
 {
-    public static List<ContentData> contentList = new List<ContentData>();
-    public static List<MixData> mixList = new List<MixData>();
 
-    public static bool TryMix(ContentData[] contentsToMix, out MixData result)
+    public static class ContentRegistry
     {
-        foreach (var mix in mixList)
+        public static List<ContentData> contentList = new List<ContentData>();
+        public static List<MixData> mixList = new List<MixData>();
+
+        public static bool TryMix(ContentData[] contentsToMix, out MixData result)
         {
-            foreach (var mixContents in mix.contents)
+            foreach (var mix in mixList)
             {
-                foreach (var content in contentsToMix)
+                foreach (var mixContents in mix.contents)
                 {
-                    if (mixContents != content)
+                    foreach (var content in contentsToMix)
                     {
-                        break;
+                        if (mixContents != content)
+                        {
+                            break;
+                        }
                     }
                 }
+                result = mix;
+                return true;
             }
-            result = mix;
-            return true;
+            result = new MixData();
+            return false;
         }
-        result = new MixData();
-        return false;
     }
+
 }

@@ -1,10 +1,15 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewContent",menuName = "Cittius/Interaction/Recipient/Content")]
-public class ContentData : ScriptableObject
+namespace Cittius.Interaction.Extras
 {
-    public string name;
-    public string description;
-    public float density;
-    public Material material;
+
+    [CreateAssetMenu(fileName = "NewContent", menuName = "Cittius/Interaction/Recipient/Content")]
+    public class ContentData : ScriptableObject
+    {
+        public string name;
+        public string description;
+        public float density;
+        public Material material;
+    }
+
 }

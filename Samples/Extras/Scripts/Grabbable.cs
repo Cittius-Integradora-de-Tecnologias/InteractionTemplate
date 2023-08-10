@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Cittius.Interaction
+namespace Cittius.Interaction.Extras
 {
     [RequireComponent(typeof(Rigidbody))]
     public class Grabbable : InteractBase

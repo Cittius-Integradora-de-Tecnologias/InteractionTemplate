@@ -1,11 +1,11 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Cittius.Interaction
+
+namespace Cittius.Interaction.Extras
 {
     [RequireComponent(typeof(InteractBase))]
 
@@ -31,13 +31,19 @@ namespace Cittius.Interaction
         [Header("Configuration")]
         public bool canBeAdded = false;
         [SerializeField] private bool m_isInfinite = false;
+        private int m_transferenceDelay = 1;
+        public int transferenceDelay { get { return m_transferenceDelay; } }
         public bool isInfinite { get { return m_isInfinite; } }
-        public int transferenceAmount = 10;
-        public int maxLimite = 1000; //1000 == 1L
+        [SerializeField] private int m_tranferenceAmount = 10;
+        public int transferenceAmount { get { return m_tranferenceAmount; } }
+        [SerializeField] private int m_maxLimite = 1000; //1000 == 1L
+        public int maxLimite { get { return m_maxLimite; } }
 
 
         [Header("Recipient Events")]
         public UnityEvent<RecipientContent> onAdded;
+        public UnityEvent<RecipientArg> onStartTranference;
+        public UnityEvent<RecipientArg> onStopTranference;
 
         private Coroutine tranferenceCoroutine;
         private void Start()
@@ -47,38 +53,54 @@ namespace Cittius.Interaction
             {
                 if (canBeAdded)
                 {
-                    tranferenceCoroutine = StartCoroutine(InitTransference(arg, 1f));
+                    tranferenceCoroutine = StartCoroutine(StartTransference(arg, 1f));
                 }
             };
-            interact.deactivated += StopTransference;
+            //if (this.gameObject.TryGetComponent(out LiquidControl liquidControl))
+            //{
+            //    liquidControl.lineLiquid.onEndPoint.AddListener((hit) =>
+            //    {
+            //        if (canBeAdded)
+            //        {
+            //            tranferenceCoroutine = StartCoroutine(StartTransference(arg, 1f));
+            //        }
+            //    });
+            //}
+            interact.deactivated += (arg) => { StopTransference(arg); };
         }
 
-        private IEnumerator InitTransference(ActivateArg args, float delay)
+        private IEnumerator StartTransference(ActivateArg args, float delay)
         {
             IInteract interact = InteractionManager.FindInteraction(args.interactor);
             if (interact != null
                 && interact.transform.TryGetComponent<Recipient>(out Recipient recipient)
                 && recipient.storedContents.Count > 0)
             {
-                while (true)
+                RecipientArg recipientArg = new RecipientArg(recipient, this, m_tranferenceAmount);
+                while (recipient.GetQuantity() > 0)
                 {
                     ReceiveTransference(recipient, transferenceAmount);
-                    if (this.gameObject.TryGetComponent(out LiquidControl liquidControl))
-                    {
-                        liquidControl.ToFill(transferenceAmount, maxLimite);
-                    }
+                    onStartTranference?.Invoke(recipientArg);
                     yield return new WaitForSeconds(delay);
                 }
+                StopTransference(args);
             }
             yield return null;
         }
 
-        private void StopTransference(ActivateArg obj)
+        private void StopTransference(ActivateArg arg)
         {
             if (tranferenceCoroutine != null)
             {
-                StopCoroutine(tranferenceCoroutine);
-                tranferenceCoroutine = null;
+                if (interact != null
+               && interact.transform.TryGetComponent<Recipient>(out Recipient recipient)
+               && recipient.storedContents.Count > 0)
+                {
+                    RecipientArg recipientArg = new RecipientArg(recipient, this, m_tranferenceAmount);
+                    StopCoroutine(tranferenceCoroutine);
+                    tranferenceCoroutine = null;
+                    onStopTranference?.Invoke(recipientArg);
+                }
             }
         }
 
@@ -97,12 +119,6 @@ namespace Cittius.Interaction
                     TryAddContent(repContent.content, transferenceAmount);
                 }
             }
-        }
-
-        [Obsolete("Use TryAddContent instead", true)]
-        public void Fill(string contentName)
-        {
-            //TryAddContent(null);
         }
 
         /// <summary>
