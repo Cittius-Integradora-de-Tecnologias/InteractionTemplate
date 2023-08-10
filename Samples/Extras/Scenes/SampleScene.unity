@@ -696,40 +696,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
-      propertyPath: canBeAdded
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
-      propertyPath: isInfinite
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
-      propertyPath: canBeFilled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
-      propertyPath: contentName
-      value: Water
-      objectReference: {fileID: 0}
-    - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
-      propertyPath: m_contentName
-      value: Agua
-      objectReference: {fileID: 0}
-    - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
-      propertyPath: m_contents.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
       propertyPath: m_storedContents.Array.size
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
-      propertyPath: m_contents.Array.data[0].content
-      value: 
-      objectReference: {fileID: 11400000, guid: 6d851b7cf7c918e4abb5292d510202f9, type: 2}
-    - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
-      propertyPath: m_contents.Array.data[0].quantity
-      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
       propertyPath: m_storedContents.Array.data[0].content
@@ -739,10 +707,10 @@ PrefabInstance:
       propertyPath: m_storedContents.Array.data[0].quantity
       value: 20
       objectReference: {fileID: 0}
-    - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
-      propertyPath: m_storedContents.Array.data[0].contentList
-      value: 
-      objectReference: {fileID: 11400000, guid: 6d851b7cf7c918e4abb5292d510202f9, type: 2}
+    - target: {fileID: 7815072521142543779, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
+      propertyPath: mesurementPos.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
 --- !u!1001 &5122117232532053102

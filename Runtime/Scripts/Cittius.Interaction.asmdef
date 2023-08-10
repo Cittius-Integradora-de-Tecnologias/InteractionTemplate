@@ -1,6 +1,6 @@
 {
-    "name": "HotQueen.Interaction",
-    "rootNamespace": "HotQueen.Interaction",
+    "name": "Cittius.Interaction",
+    "rootNamespace": "Cittius.Interaction",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

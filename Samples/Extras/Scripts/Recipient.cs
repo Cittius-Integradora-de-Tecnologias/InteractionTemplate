@@ -55,7 +55,7 @@ namespace Cittius.Interaction
                 interact != null
                 && interact.transform.TryGetComponent<Recipient>(out Recipient recipient)
                 && recipient.storedContents.Count > 0
-                )
+               )
             {
 
                 RecipientContent repContent = recipient.m_storedContents.Last();
