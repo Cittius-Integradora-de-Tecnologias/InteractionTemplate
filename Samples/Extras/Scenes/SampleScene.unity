@@ -700,6 +700,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
+      propertyPath: canBeAdded
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
+      propertyPath: m_isInfinite
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4758909099607797657, guid: ffb2b2881f22edd429e948ee6e67ea5f, type: 3}
       propertyPath: m_storedContents.Array.size
       value: 1
       objectReference: {fileID: 0}

@@ -30,8 +30,8 @@ namespace Cittius.Interaction
 
         [Header("Configuration")]
         public bool canBeAdded = false;
-        public bool isInfinite = false;
-        public bool havaLimit = true;
+        [SerializeField] private bool m_isInfinite = false;
+        public bool isInfinite { get { return m_isInfinite; } }
         public int transferenceAmount = 10;
         public int maxLimite = 1000; //1000 == 1L
 
@@ -46,7 +46,10 @@ namespace Cittius.Interaction
             interact = this.gameObject.GetComponent<InteractBase>();
             interact.activated += (arg) =>
             {
-                tranferenceCoroutine = StartCoroutine(InitTransference(arg, 1f));
+                if (canBeAdded)
+                {
+                    tranferenceCoroutine = StartCoroutine(InitTransference(arg, 1f));
+                }
             };
             interact.deactivated += StopTransference;
         }
@@ -54,11 +57,9 @@ namespace Cittius.Interaction
         private IEnumerator InitTransference(ActivateArg args, float delay)
         {
             IInteract interact = InteractionManager.FindInteraction(args.interactor);
-            if (
-                interact != null
+            if (interact != null
                 && interact.transform.TryGetComponent<Recipient>(out Recipient recipient)
-                && recipient.storedContents.Count > 0
-               )
+                && recipient.storedContents.Count > 0)
             {
                 while (true)
                 {
@@ -71,10 +72,12 @@ namespace Cittius.Interaction
 
         private void StopTransference(ActivateArg obj)
         {
-            StopCoroutine(tranferenceCoroutine);
+            if (tranferenceCoroutine != null)
+            {
+                StopCoroutine(tranferenceCoroutine);
+                tranferenceCoroutine = null;
+            }
         }
-
-
 
         /// <summary>
         /// By defualt is called when this Object is grabbed by a interactor and interacted with another recipient, 
@@ -86,7 +89,7 @@ namespace Cittius.Interaction
             if (other.m_storedContents.Count() > 0)
             {
                 RecipientContent repContent = other.m_storedContents.Last();
-                if (other.TryRemoveContent(repContent.content, false, transferenceAmount))
+                if (other.isInfinite || other.TryRemoveContent(repContent.content, false, transferenceAmount))
                 {
                     TryAddContent(repContent.content, transferenceAmount);
                 }
