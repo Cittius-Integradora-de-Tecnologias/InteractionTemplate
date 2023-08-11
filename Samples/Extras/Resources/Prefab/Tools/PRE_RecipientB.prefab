@@ -145,6 +145,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rangeLiquid: 0.5
+  onEndPoint:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1090059506250832312
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,9 +297,15 @@ MonoBehaviour:
   m_storedContents: []
   canBeAdded: 1
   m_isInfinite: 0
-  transferenceAmount: 10
-  maxLimite: 1000
+  m_tranferenceAmount: 10
+  m_maxLimite: 1000
   onAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  onStartTranference:
+    m_PersistentCalls:
+      m_Calls: []
+  onStopTranference:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &8882851370242044362
@@ -389,8 +398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9429f6796f532664b947d7c249e8c815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToFill: 0.2
-  lineLiquid: {fileID: 3423439636051482404}
+  m_lineLiquid: {fileID: 3423439636051482404}
   originLiquid: {fileID: 7689986435309840072}
   minAngle: 45
 --- !u!1 &6607994059990112766

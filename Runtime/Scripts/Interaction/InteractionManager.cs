@@ -6,6 +6,7 @@ namespace Cittius.Interaction
     {
 
         public delegate void RegistryEvent<T>(T value) where T : struct;
+
         //Interaction
         private static List<InteractionArg> m_interactionArgs = new List<InteractionArg>();
         public static event RegistryEvent<InteractionArg> OnRegistered; // Create delegate to registry
