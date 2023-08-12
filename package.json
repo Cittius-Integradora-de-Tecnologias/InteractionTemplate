@@ -5,7 +5,9 @@
     "description": "Simple interaction tamplate to be used in Hotqueen projects",
     "unity": "2021.3",
     "unityRelease": "25f1",
-    "dependencies": {},
+    "dependencies": {
+        "com.unity.inputsystem": "1.5.1"
+    },
     "keywords": [
         "Interaction",
         "Character",

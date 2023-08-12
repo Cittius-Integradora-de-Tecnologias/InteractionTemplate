@@ -1,17 +1,24 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Cittius.Interaction.Extras
 {
-    public class MouseInteractor : MonoBehaviour
+    [RequireComponent(typeof(Rigidbody))]
+    public class KeyboardPlayer: MonoBehaviour
     {
+        [Header("Interaction")]
         public float distance = 1f;
         public Interactor interactor;
+
+        [Header("Control")]
         public float moveSpeed = 1;
         public float rotationSpeed = 1;
+        [SerializeField] private Camera playerCamera;
+        private Rigidbody rb;
 
         private void OnEnable()
         {
-            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
         private void OnDisable()
@@ -20,16 +27,24 @@ namespace Cittius.Interaction.Extras
             Cursor.visible = true;
         }
 
+        private void Start()
+        {
+            rb = GetComponent<Rigidbody>();
+        }
+
         private void Update()
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Physics.Raycast(ray.origin, ray.direction, out RaycastHit hitInfo, distance);
             Debug.DrawRay(ray.origin, ray.direction * distance, Color.red, 1f);
 
             Move();
             Rotation();
-            InputInteraction(hitInfo);
-            InputActivate(hitInfo);
+
+            if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hitInfo, distance))
+            {
+                InputInteraction(hitInfo);
+                InputActivate(hitInfo);
+            }
         }
 
         private void InputActivate(RaycastHit hitInfo)
@@ -75,27 +90,30 @@ namespace Cittius.Interaction.Extras
             direction.z = Input.GetAxis("Vertical");
             direction.y = Input.mouseScrollDelta.y;
 
-            this.transform.position += direction * moveSpeed;
+            direction *= moveSpeed * Time.fixedDeltaTime;
+            Vector3 movement = (this.transform.forward * direction.z) + (this.transform.right * direction.x);
+            movement.y = rb.velocity.y;
+            rb.velocity = movement;
+
         }
 
         Vector3 currentRotation = new Vector3();
         private void Rotation()
         {
-
-            currentRotation += GetMouseDelta();
-            //currentRotation.x = Mathf.Clamp(currentRotation.z, -90f, 90f);
-            //currentRotation.z = 0;
-            this.transform.eulerAngles = currentRotation;
+            if (Input.mousePosition.magnitude > 0.1f)
+            {
+                currentRotation += GetMouseDelta() * rotationSpeed * Time.fixedDeltaTime;
+                currentRotation.x = Mathf.Clamp(currentRotation.x, -90f, 90f);
+                currentRotation.z = 0;
+                this.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, currentRotation.y, 0);
+                playerCamera.transform.eulerAngles = new Vector3(currentRotation.x, playerCamera.transform.eulerAngles.y, 0);
+            }
         }
 
-        private Vector2 mousePosition_old;
         private Vector3 GetMouseDelta()
         {
-            Vector2 mousePosition_New = Input.mousePosition;
-            Vector2 mousePosition_Delta = mousePosition_old - mousePosition_New;
-            mousePosition_Delta = mousePosition_Delta.normalized;
-            mousePosition_old = mousePosition_New;
-            return new Vector3(mousePosition_Delta.y, -mousePosition_Delta.x, 0);
+            Vector2 mousePosition_Delta = Mouse.current.delta.ReadValue();
+            return new Vector3(-mousePosition_Delta.y, mousePosition_Delta.x, 0);
 
         }
     }

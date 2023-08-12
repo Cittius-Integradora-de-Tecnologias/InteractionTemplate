@@ -1,4 +1,4 @@
-using DG.Tweening;
+//using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
@@ -81,16 +81,16 @@ namespace Cittius.Interaction.Extras
         {
             float percentageTranfer = (transferenceAmount / maxLimit);
             float fill = liquidMaterial.GetFloat("_Fill");
-            DOTween.To(() => fill, x => fill = x, fill + percentageTranfer, timeToFill).OnUpdate(() =>
-            {
-                if (fill < 1)
-                    liquidMaterial.SetFloat("_Fill", fill + percentageTranfer);
-                else
-                {
-                    liquidMaterial.SetFloat("_Fill", 1);
-                    StopFill();
-                }
-            });
+            //DOTween.To(() => fill, x => fill = x, fill + percentageTranfer, timeToFill).OnUpdate(() =>
+            //{
+            //    if (fill < 1)
+            //        liquidMaterial.SetFloat("_Fill", fill + percentageTranfer);
+            //    else
+            //    {
+            //        liquidMaterial.SetFloat("_Fill", 1);
+            //        StopFill();
+            //    }
+            //});
         }
 
 
@@ -122,16 +122,16 @@ namespace Cittius.Interaction.Extras
         {
             float percentageTranfer = (transferenceAmount / maxLimit);
             float fill = liquidMaterial.GetFloat("_Fill");
-            DOTween.To(() => fill, x => fill = x, fill - percentageTranfer, timeToFill).OnUpdate(() =>
-            {
-                if (fill > 0)
-                    liquidMaterial.SetFloat("_Fill", fill - percentageTranfer);
-                else
-                {
-                    liquidMaterial.SetFloat("_Fill", 0);
-                    StopFill();
-                }
-            });
+            //DOTween.To(() => fill, x => fill = x, fill - percentageTranfer, timeToFill).OnUpdate(() =>
+            //{
+            //    if (fill > 0)
+            //        liquidMaterial.SetFloat("_Fill", fill - percentageTranfer);
+            //    else
+            //    {
+            //        liquidMaterial.SetFloat("_Fill", 0);
+            //        StopFill();
+            //    }
+            //});
         }
 
         public void StartDrain(float qtdMl, float totalMl, float timeToFill)
