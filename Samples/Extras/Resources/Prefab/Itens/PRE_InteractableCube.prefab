@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 5122117232586024826}
   - component: {fileID: 5122117232586024829}
   - component: {fileID: 5122117232586024828}
-  - component: {fileID: 5122117232586024831}
   - component: {fileID: 1019788055}
+  - component: {fileID: 7676492082697510647}
   m_Layer: 0
   m_Name: PRE_InteractableCube
   m_TagString: Untagged
@@ -113,78 +113,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_renderer: {fileID: 5122117232586024826}
---- !u!114 &5122117232586024831
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5122117232586024830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bab67a027f709ba4095a2db7036ec1a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onInteracted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5122117232586024828}
-        m_TargetAssemblyTypeName: HotQueen.Interaction.BoxInteractionResponses, Assembly-CSharp
-        m_MethodName: ChangeColor
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: '#fc0303'
-          m_BoolArgument: 0
-        m_CallState: 2
-  onStoppedInteraction:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5122117232586024828}
-        m_TargetAssemblyTypeName: HotQueen.Interaction.BoxInteractionResponses, Assembly-CSharp
-        m_MethodName: ChangeColor
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: '#2cfc03'
-          m_BoolArgument: 0
-        m_CallState: 2
-  onActivated:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5122117232586024828}
-        m_TargetAssemblyTypeName: HotQueen.Interaction.BoxInteractionResponses, Assembly-CSharp
-        m_MethodName: ChangeColor
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: '#031cfc'
-          m_BoolArgument: 0
-        m_CallState: 2
-  onDeactivated:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5122117232586024828}
-        m_TargetAssemblyTypeName: HotQueen.Interaction.BoxInteractionResponses, Assembly-CSharp
-        m_MethodName: ChangeColor
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: '#fc0303'
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!54 &1019788055
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -201,3 +129,82 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7676492082697510647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5122117232586024830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d4f4a7577d4f3e4f841d1142be260b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_data:
+    name: Cube interactable
+    nameID: cube_interactable
+    numericID: 1
+  onInteracted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5122117232586024828}
+        m_TargetAssemblyTypeName: Cittius.Interaction.Extras.BoxInteractionResponses,
+          Cittius.Interaction.Extras
+        m_MethodName: ChangeColor
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: '#eb3446'
+          m_BoolArgument: 0
+        m_CallState: 2
+  onStoppedInteraction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5122117232586024828}
+        m_TargetAssemblyTypeName: Cittius.Interaction.Extras.BoxInteractionResponses,
+          Cittius.Interaction.Extras
+        m_MethodName: ChangeColor
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: '#ebdc34'
+          m_BoolArgument: 0
+        m_CallState: 2
+  onActivated:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5122117232586024828}
+        m_TargetAssemblyTypeName: Cittius.Interaction.Extras.BoxInteractionResponses,
+          Cittius.Interaction.Extras
+        m_MethodName: ChangeColor
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: '#34d0eb'
+          m_BoolArgument: 0
+        m_CallState: 2
+  onDeactivated:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5122117232586024828}
+        m_TargetAssemblyTypeName: UnityEngine.Component, UnityEngine
+        m_MethodName: SendMessage
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: '#ebdc34'
+          m_BoolArgument: 0
+        m_CallState: 2

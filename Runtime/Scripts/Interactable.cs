@@ -1,11 +1,15 @@
+using Cittius.Interaction.Data;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Cittius.Interaction
 {
-    public class InteractBase : MonoBehaviour, IInteract, IActivate
+    public class Interactable : MonoBehaviour, IInteract, IActivate
     {
+        [SerializeField] private InteractableData m_data;
+        public InteractableData data { get { return m_data; } }
+
         //unity event
         [SerializeField] private UnityEvent<InteractionArg> onInteracted;
         [SerializeField] private UnityEvent<InteractionArg> onStoppedInteraction;

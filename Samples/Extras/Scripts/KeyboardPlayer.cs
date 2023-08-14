@@ -54,7 +54,7 @@ namespace Cittius.Interaction.Extras
             {
 
                 if (hitInfo.collider.attachedRigidbody
-                    && hitInfo.collider.attachedRigidbody.TryGetComponent<InteractBase>(out InteractBase interact))
+                    && hitInfo.collider.attachedRigidbody.TryGetComponent<Interactable>(out Interactable interact))
                 {
                     interactor.Activate(interact);
                 }
@@ -72,7 +72,7 @@ namespace Cittius.Interaction.Extras
             {
 
                 if (hitInfo.collider.attachedRigidbody
-                    && hitInfo.collider.attachedRigidbody.TryGetComponent<InteractBase>(out InteractBase interact))
+                    && hitInfo.collider.attachedRigidbody.TryGetComponent<Interactable>(out Interactable interact))
                 {
                     interactor.Interact(interact);
                 }

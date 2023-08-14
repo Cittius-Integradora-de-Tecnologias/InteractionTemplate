@@ -141,6 +141,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b4ffd619001f84e85f775d48b52c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_data:
+    name: Grabbable Cube
+    nameID: grabbable_cube
+    numericID: 0
   onInteracted:
     m_PersistentCalls:
       m_Calls:

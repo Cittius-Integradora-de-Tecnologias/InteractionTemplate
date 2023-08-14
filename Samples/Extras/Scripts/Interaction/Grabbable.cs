@@ -4,7 +4,7 @@ using UnityEngine.Events;
 namespace Cittius.Interaction.Extras
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class Grabbable : InteractBase
+    public class Grabbable : Interactable
     {
         private Rigidbody rb;
         public UnityEvent<GrabArg> OnGrabbed;

@@ -24,7 +24,7 @@ namespace Cittius.Interaction
         }
 
         //Interaction
-        public void Interact(InteractBase interact)
+        public void Interact(Interactable interact)
         {
             InteractionArg arg = new InteractionArg(this, interact);
             InteractionManager.RegisterInteraction(arg);
@@ -62,8 +62,8 @@ namespace Cittius.Interaction
         {
             if (!interactOnCollision) { return; }
 
-            if (collision.attachedRigidbody && collision.attachedRigidbody.TryGetComponent<InteractBase>(out InteractBase interactBase)
-                || collision.TryGetComponent<InteractBase>(out interactBase))
+            if (collision.attachedRigidbody && collision.attachedRigidbody.TryGetComponent<Interactable>(out Interactable interactBase)
+                || collision.TryGetComponent<Interactable>(out interactBase))
             {
                 Interact(interactBase);
             }
@@ -72,8 +72,8 @@ namespace Cittius.Interaction
         public void CancelInteractByCollision(Collider collision)
         {
             if (!interactOnCollision) { return; }
-            if (collision.attachedRigidbody && collision.attachedRigidbody.TryGetComponent<InteractBase>(out InteractBase interactBase)
-                || collision.TryGetComponent<InteractBase>(out interactBase))
+            if (collision.attachedRigidbody && collision.attachedRigidbody.TryGetComponent<Interactable>(out Interactable interactBase)
+                || collision.TryGetComponent<Interactable>(out interactBase))
             {
                 CancelInteraction();
             }

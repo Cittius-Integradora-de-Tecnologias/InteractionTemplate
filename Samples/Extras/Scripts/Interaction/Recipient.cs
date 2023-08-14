@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace Cittius.Interaction.Extras
 {
-    [RequireComponent(typeof(InteractBase))]
+    [RequireComponent(typeof(Interactable))]
 
     public class Recipient : MonoBehaviour
     {
@@ -26,7 +26,7 @@ namespace Cittius.Interaction.Extras
 
         [SerializeField] private List<RecipientContent> m_storedContents;
         public List<RecipientContent> storedContents { get { return m_storedContents; } }
-        private InteractBase interact;
+        private Interactable interact;
 
         [Header("Configuration")]
         public bool canBeAdded = false;
@@ -48,7 +48,7 @@ namespace Cittius.Interaction.Extras
         private Coroutine tranferenceCoroutine;
         private void Start()
         {
-            interact = this.gameObject.GetComponent<InteractBase>();
+            interact = this.gameObject.GetComponent<Interactable>();
             interact.activated += (arg) =>
             {
                 if (canBeAdded)

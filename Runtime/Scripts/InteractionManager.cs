@@ -27,7 +27,7 @@ namespace Cittius.Interaction
             if (
                m_interactionArgs.Contains(arg)
                || arg.interacted.transform.TryGetComponent<Interactor>(out Interactor interactor)
-               && arg.interactor.transform.TryGetComponent<InteractBase>(out InteractBase interactBase)
+               && arg.interactor.transform.TryGetComponent<Interactable>(out Interactable interactBase)
                && m_interactionArgs.Contains(new InteractionArg(interactor, interactBase)
                )) { return false; }
 
@@ -125,7 +125,7 @@ namespace Cittius.Interaction
         /// <summary>
         /// Return all the <param name="interactBase"></param> interactors
         /// </summary>
-        public static Interactor FindInteractor(InteractBase interactBase)
+        public static Interactor FindInteractor(Interactable interactBase)
         {
             foreach (var item in m_activateArgs)
             {
