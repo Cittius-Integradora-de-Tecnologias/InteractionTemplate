@@ -1107,6 +1107,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: InteractableCube
       objectReference: {fileID: 0}
+    - target: {fileID: 7676492082697510647, guid: f7fa12df9c47a514b9afca3442b2b13d, type: 3}
+      propertyPath: onDeactivated.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676492082697510647, guid: f7fa12df9c47a514b9afca3442b2b13d, type: 3}
+      propertyPath: onDeactivated.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676492082697510647, guid: f7fa12df9c47a514b9afca3442b2b13d, type: 3}
+      propertyPath: onDeactivated.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676492082697510647, guid: f7fa12df9c47a514b9afca3442b2b13d, type: 3}
+      propertyPath: onDeactivated.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676492082697510647, guid: f7fa12df9c47a514b9afca3442b2b13d, type: 3}
+      propertyPath: onDeactivated.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Cittius.Interaction.Extras.BoxInteractionResponses, Cittius.Interaction.Extras
+      objectReference: {fileID: 0}
+    - target: {fileID: 7676492082697510647, guid: f7fa12df9c47a514b9afca3442b2b13d, type: 3}
+      propertyPath: onDeactivated.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnityEngine.Component, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7fa12df9c47a514b9afca3442b2b13d, type: 3}
 --- !u!1001 &6422604345305676945
