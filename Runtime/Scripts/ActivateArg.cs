@@ -1,6 +1,8 @@
-﻿namespace Cittius.Interaction
+﻿using System.Data.SqlTypes;
+
+namespace Cittius.Interaction
 {
-    public struct ActivateArg
+    public class ActivateArg
     {
         public Interactor interactor;
         public IActivate activated;

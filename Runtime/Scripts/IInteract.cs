@@ -9,8 +9,8 @@ namespace Cittius.Interaction
         public event Action<InteractionArg> stoppedInteraction;
         public Transform transform { get; }
 
-        public void Interact(InteractionArg args);
-        public void StopInteraction(InteractionArg args);
+        protected void Interact(InteractionArg args);
+        protected void StopInteraction(InteractionArg args);
 
     }
 }

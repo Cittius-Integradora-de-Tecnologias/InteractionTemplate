@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Cittius.Interaction
 {
-    public struct InteractionArg
+    public class InteractionArg
     {
         public Interactor interactor;
         public IInteract interacted;
