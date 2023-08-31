@@ -8,7 +8,6 @@ using UnityEngine.Events;
 namespace Cittius.Interaction.Extras
 {
     [RequireComponent(typeof(Interactable))]
-
     public class Recipient : MonoBehaviour
     {
         [System.Serializable]
@@ -25,27 +24,49 @@ namespace Cittius.Interaction.Extras
         }
 
         [SerializeField] private List<RecipientContent> m_storedContents;
-        public List<RecipientContent> storedContents { get { return m_storedContents; } }
+
+        public List<RecipientContent> storedContents
+        {
+            get { return m_storedContents; }
+        }
+
         private Interactable interact;
 
-        [Header("Configuration")]
-        public bool canBeAdded = false;
+        [Header("Configuration")] public bool canBeAdded = false;
         [SerializeField] private bool m_isInfinite = false;
         private int m_transferenceDelay = 1;
-        public int transferenceDelay { get { return m_transferenceDelay; } }
-        public bool isInfinite { get { return m_isInfinite; } }
+
+        public int transferenceDelay
+        {
+            get { return m_transferenceDelay; }
+        }
+
+        public bool isInfinite
+        {
+            get { return m_isInfinite; }
+        }
+
         [SerializeField] private int m_tranferenceAmount = 10;
-        public int transferenceAmount { get { return m_tranferenceAmount; } }
+
+        public int transferenceAmount
+        {
+            get { return m_tranferenceAmount; }
+        }
+
         [SerializeField] private int m_maxLimite = 1000; //1000 == 1L
-        public int maxLimite { get { return m_maxLimite; } }
+
+        public int maxLimite
+        {
+            get { return m_maxLimite; }
+        }
 
 
-        [Header("Recipient Events")]
-        public UnityEvent<RecipientContent> onAdded;
+        [Header("Recipient Events")] public UnityEvent<RecipientContent> onAdded;
         public UnityEvent<RecipientArg> onStartTranference;
         public UnityEvent<RecipientArg> onStopTranference;
 
         private Coroutine tranferenceCoroutine;
+
         private void Start()
         {
             interact = this.gameObject.GetComponent<Interactable>();
@@ -56,24 +77,14 @@ namespace Cittius.Interaction.Extras
                     tranferenceCoroutine = StartCoroutine(StartTransference(arg, 1f));
                 }
             };
-            //if (this.gameObject.TryGetComponent(out LiquidControl liquidControl))
-            //{
-            //    liquidControl.lineLiquid.onEndPoint.AddListener((hit) =>
-            //    {
-            //        if (canBeAdded)
-            //        {
-            //            tranferenceCoroutine = StartCoroutine(StartTransference(arg, 1f));
-            //        }
-            //    });
-            //}
+
             interact.deactivated += (arg) => { StopTransference(arg); };
         }
 
         private IEnumerator StartTransference(ActivateArg args, float delay)
         {
-            IInteract interact = InteractionManager.FindInteraction(args.interactor);
-            if (interact != null
-                && interact.transform.TryGetComponent<Recipient>(out Recipient recipient)
+            if (InteractionManager.FindActivity(args.interactor, out ActivateArg[] activateArg)
+                && activateArg[0].activated.transform.TryGetComponent<Recipient>(out Recipient recipient)
                 && recipient.storedContents.Count > 0)
             {
                 RecipientArg recipientArg = new RecipientArg(recipient, this, m_tranferenceAmount);
@@ -83,8 +94,10 @@ namespace Cittius.Interaction.Extras
                     onStartTranference?.Invoke(recipientArg);
                     yield return new WaitForSeconds(delay);
                 }
+
                 StopTransference(args);
             }
+
             yield return null;
         }
 
@@ -93,8 +106,8 @@ namespace Cittius.Interaction.Extras
             if (tranferenceCoroutine != null)
             {
                 if (interact != null
-               && interact.transform.TryGetComponent<Recipient>(out Recipient recipient)
-               && recipient.storedContents.Count > 0)
+                    && interact.transform.TryGetComponent<Recipient>(out Recipient recipient)
+                    && recipient.storedContents.Count > 0)
                 {
                     RecipientArg recipientArg = new RecipientArg(recipient, this, m_tranferenceAmount);
                     StopCoroutine(tranferenceCoroutine);
@@ -142,7 +155,6 @@ namespace Cittius.Interaction.Extras
             }
 
             //ContentRegistry.TryMix(GetContents(), out MixData result);
-
         }
 
         /// <summary>
@@ -155,25 +167,30 @@ namespace Cittius.Interaction.Extras
         /// <returns></returns>
         public bool TryRemoveContent(ContentData data, bool clear = true, int quantity = 20)
         {
-            if (data == null) { return false; }
+            if (data == null)
+            {
+                return false;
+            }
+
             RecipientContent[] contents = this.m_storedContents.ToArray();
             for (int i = 0; i < contents.Length; i++)
             {
-                if (contents[i].content.name == data.name)// contains 
+                if (contents[i].content.name == data.name) // contains 
                 {
                     if (clear || contents[i].quantity - quantity <= 0)
                     {
                         m_storedContents.RemoveAt(i);
-
                     }
                     else
                     {
                         contents[i].quantity -= quantity;
                         m_storedContents = contents.ToList();
                     }
+
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -184,7 +201,6 @@ namespace Cittius.Interaction.Extras
         /// <param name="content"></param>
         private void AddContent(ContentData content, int quantity)
         {
-
             RecipientContent recipientContent = new RecipientContent(content, quantity);
             if (!TryIncrement(recipientContent))
             {
@@ -194,7 +210,6 @@ namespace Cittius.Interaction.Extras
             onAdded?.Invoke(recipientContent);
             Debug.Log(this.transform.name + " Filled with " + recipientContent.content.name);
             Debug.Log(this.transform.name + " have " + GetQuantity() + "ml");
-
         }
 
         public bool TryIncrement(RecipientContent n_content)
@@ -204,7 +219,7 @@ namespace Cittius.Interaction.Extras
             for (int i = 0; i < contents.Length; i++)
             {
                 l_content = contents.ElementAt(i);
-                if (l_content.content.name == n_content.content.name)// contains 
+                if (l_content.content.name == n_content.content.name) // contains 
                 {
                     l_content = new RecipientContent(l_content.content, l_content.quantity += n_content.quantity);
                     contents[i] = l_content;
@@ -212,6 +227,7 @@ namespace Cittius.Interaction.Extras
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -226,6 +242,7 @@ namespace Cittius.Interaction.Extras
             {
                 sum += item.quantity;
             }
+
             return sum;
         }
 
@@ -240,6 +257,7 @@ namespace Cittius.Interaction.Extras
             {
                 stored.Append(item.content);
             }
+
             return stored;
         }
     }

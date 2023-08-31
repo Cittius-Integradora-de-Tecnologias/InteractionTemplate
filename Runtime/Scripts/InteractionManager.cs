@@ -1,125 +1,141 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Globalization;
+using System.Linq;
+using Codice.Client.BaseCommands.Merge;
+using UnityEditor;
 
 namespace Cittius.Interaction
 {
     public static class InteractionManager
     {
-
-        public delegate void RegistryEvent<T>(T value) where T : struct;
-
-        //Interaction
-        private static List<InteractionArg> m_interactionArgs = new List<InteractionArg>();
-        public static event RegistryEvent<InteractionArg> OnRegistered; // Create delegate to registry
-        public static event RegistryEvent<InteractionArg> OnRemoved;
-
-        //Activate
-        private static List<ActivateArg> m_activateArgs = new List<ActivateArg>();
-        private static event RegistryEvent<ActivateArg> OnActivate;
-        private static event RegistryEvent<ActivateArg> OnDeactivate;
-
-        /// <summary>
-        /// Handle interaction for the interactor and interactable
-        /// </summary>
-        /// <param name="arg"></param>
-        /// <returns></returns>
-        public static bool RegisterInteraction(InteractionArg arg)
+        public struct RegistryData
         {
-            if (
-               m_interactionArgs.Contains(arg)
-               || arg.interacted.transform.TryGetComponent<Interactor>(out Interactor interactor)
-               && arg.interactor.transform.TryGetComponent<Interactable>(out Interactable interactBase)
-               && m_interactionArgs.Contains(new InteractionArg(interactor, interactBase)
-               )) { return false; }
+            public List<InteractionArg> interactionArgs;
+            public List<ActivateArg> activateArgs;
 
-            m_interactionArgs.Add(arg);
-            OnRegistered?.Invoke(arg);
-            arg.interacted.Interact(arg);
-            return true;
+            public RegistryData(List<InteractionArg> interactionArgs, List<ActivateArg> activateArgs)
+            {
+                this.interactionArgs = interactionArgs;
+                this.activateArgs = activateArgs;
+            }
         }
 
-        /// <summary>
-        /// Perform the cancelation of the previous interactions made by the interactor, It will return true if finished successfully or false otherwise.
-        /// When called the <paramref name="interactables"/> can be informed, this means that only this exact interactables will be cancelled.
-        /// </summary>
-        /// <param name="arg"></param>
-        /// <returns></returns>
-        public static bool RemoveInteraction(Interactor interactor, List<IInteract> interactables = null)
+        public delegate void RegistryEvent<T>(T value);
+
+        public static Dictionary<Interactor, RegistryData> InteractionRegistry =
+            new Dictionary<Interactor, RegistryData>();
+
+        public static event Action registered;
+
+        public static void Add<T>(T data)
         {
-            List<InteractionArg> args = new List<InteractionArg>();
-            foreach (var item in m_interactionArgs)
+            RegistryData regData = new RegistryData();
+            switch (data)
             {
-                if (item.interactor == interactor)
-                {
-                    if (interactables != null && !interactables.Contains(item.interacted))
+                case ActivateArg:
+                    ActivateArg activate = data as ActivateArg;
+                    if (InteractionRegistry.Keys.Contains(activate.interactor))
                     {
-                        continue;
+                        InteractionRegistry[activate.interactor].activateArgs.Add(activate);
                     }
-                    InteractionArg arg = new InteractionArg(item.interactor, item.interacted);
-                    arg.interacted.StopInteraction(arg);
-                    OnRemoved?.Invoke(arg);
-                    args.Add(arg);
-                }
+                    else
+                    {
+                        List<ActivateArg> activateArgs = new List<ActivateArg>();
+                        activateArgs.Add(activate);
+                        InteractionRegistry.Add(activate.interactor,
+                            new RegistryData(new List<InteractionArg>(), activateArgs));
+                    }
+
+                    break;
+                case InteractionArg:
+                    InteractionArg interaction = data as InteractionArg;
+                    if (InteractionRegistry.Keys.Contains(interaction.interactor))
+                    {
+                        InteractionRegistry[interaction.interactor].interactionArgs.Add(interaction);
+                    }
+                    else
+                    {
+                        List<InteractionArg> interactionArgs = new List<InteractionArg>();
+                        interactionArgs.Add(interaction);
+                        InteractionRegistry.Add(interaction.interactor,
+                            new RegistryData(interactionArgs, new List<ActivateArg>()));
+                    }
+
+                    break;
+                default:
+                    return;
             }
 
-            foreach (var item in args)
-            {
-                m_interactionArgs.Remove(item);
-            }
-
-            return true;
+            registered?.Invoke();
         }
 
-        public static void Activate(ActivateArg arg)
-        {
-            arg.activated.Activate(arg);
-            m_activateArgs.Add(arg);
-            OnActivate?.Invoke(arg);
-        }
+        public static event Action removed;
 
-        public static bool Deactivate(Interactor interactor)
+        /// <summary>
+        ///  Clear all <param name="interactor"></param> interactions
+        /// </summary>
+        public static void Remove(Interactor interactor)
         {
-            foreach (var item in m_activateArgs)
+            if (InteractionRegistry.Keys.Contains(interactor))
             {
-                if (item.interactor == interactor)
-                {
-                    ActivateArg arg = new ActivateArg(interactor, item.activated);
-                    item.activated.Deactivate(arg);
-                    m_activateArgs.Remove(arg);
-                    OnDeactivate?.Invoke(arg);
-                    return true;
-                }
+                InteractionRegistry.Remove(interactor);
+                removed?.Invoke();
             }
-            return false;
         }
 
         /// <summary>
-        /// Return all the <param name="interactor"></param> interactions
+        /// Clear the exact <param name="data"></param> interaction
         /// </summary>
-        public static IInteract FindInteraction(Interactor interactor)
+        public static void Remove<T>(Interactor interactor, T data) where T : INullable
         {
-            foreach (var item in m_interactionArgs)
+            if (InteractionRegistry.Keys.Contains(interactor))
             {
-                if (item.interactor == interactor)
+                RegistryData registry = InteractionRegistry[interactor];
+                switch (data)
                 {
-                    return item.interacted;
+                    case ActivateArg:
+                        foreach (var activate in registry.activateArgs)
+                        {
+                            if (activate.interactor == interactor)
+                            {
+                                registry.activateArgs.Remove(activate);
+                                return;
+                            }
+                        }
+
+                        break;
+                    case IInteract:
+                        foreach (var interaction in registry.interactionArgs)
+                        {
+                            if (interaction.interactor == interactor)
+                            {
+                                registry.interactionArgs.Remove(interaction);
+                                return;
+                            }
+                        }
+
+                        break;
+                    default:
+                        return;
                 }
             }
-            return null;
+            else
+            {
+                return;
+            }
+
+            removed?.Invoke();
         }
 
-        /// <summary>
-        /// Return all the <param name="interactor"></param> activations
-        /// </summary>
-        public static IActivate FindActivity(Interactor interactor)
+        public static bool FindInteraction(Interactor interactor, out InteractionArg[] interacts)
         {
-            foreach (var item in m_activateArgs)
-            {
-                if (item.interactor == interactor)
-                {
-                    return item.activated;
-                }
-            }
-         return null;
+            interacts = InteractionRegistry.Keys.Contains(interactor)
+                ? InteractionRegistry[interactor].interactionArgs.ToArray()
+                : null;
+            return interacts == null;
         }
 
         /// <summary>
@@ -127,21 +143,34 @@ namespace Cittius.Interaction
         /// </summary>
         public static Interactor FindInteractor(Interactable interactBase)
         {
-            foreach (var item in m_activateArgs)
-            {
-                if (item.activated == interactBase.GetComponent<IActivate>())
-                {
-                    return item.interactor;
-                }
-            }
-            foreach (var item in m_interactionArgs)
-            {
-                if (item.interacted == interactBase.GetComponent<IInteract>())
-                {
-                    return item.interactor;
-                }
-            }
+            // foreach (var item in m_activateArgs)
+            // {
+            //     if (item.activated == interactBase.GetComponent<IActivate>())
+            //     {
+            //         return item.interactor;
+            //     }
+            // }
+            //
+            // foreach (var item in m_interactionArgs)
+            // {
+            //     if (item.interacted == interactBase.GetComponent<IInteract>())
+            //     {
+            //         return item.interactor;
+            //     }
+            // }
+            //
             return null;
+        }
+
+        /// <summary>
+        /// Return all the <param name="interactor"></param> activations
+        /// </summary>
+        public static bool FindActivity(Interactor interactor, out ActivateArg[] arg)
+        {
+            arg = InteractionRegistry.Keys.Contains(interactor)
+                ? InteractionRegistry[interactor].activateArgs.ToArray()
+                : null;
+            return arg == null;
         }
     }
 }
