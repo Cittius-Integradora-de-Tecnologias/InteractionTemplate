@@ -73,7 +73,7 @@ namespace Cittius.Interaction.Extras
             interact.activated += (arg) =>
             {
                 if (canBeAdded)
-                {
+                { 
                     tranferenceCoroutine = StartCoroutine(StartTransference(arg, 1f));
                 }
             };

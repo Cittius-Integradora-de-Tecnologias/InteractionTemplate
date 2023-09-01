@@ -28,7 +28,8 @@ namespace Cittius.Interaction
         public static Dictionary<Interactor, RegistryData> InteractionRegistry =
             new Dictionary<Interactor, RegistryData>();
 
-        public static event Action registered;
+        public static event Action<InteractionArg> registeredInteraction;
+        public static event Action<ActivateArg> registeredActivation;
 
         public static void Add<T>(T data)
         {
@@ -49,6 +50,7 @@ namespace Cittius.Interaction
                             new RegistryData(new List<InteractionArg>(), activateArgs));
                     }
 
+                    registeredActivation?.Invoke(activate);
                     break;
                 case InteractionArg:
                     InteractionArg interaction = data as InteractionArg;
@@ -64,32 +66,48 @@ namespace Cittius.Interaction
                             new RegistryData(interactionArgs, new List<ActivateArg>()));
                     }
 
+                    registeredInteraction?.Invoke(interaction);
                     break;
+
                 default:
                     return;
             }
-
-            registered?.Invoke();
         }
-
-        public static event Action removed;
 
         /// <summary>
         ///  Clear all <param name="interactor"></param> interactions
         /// </summary>
-        public static void Remove(Interactor interactor)
+        public static void Clear(Interactor interactor)
         {
             if (InteractionRegistry.Keys.Contains(interactor))
             {
-                InteractionRegistry.Remove(interactor);
-                removed?.Invoke();
+                RegistryData registry = InteractionRegistry[interactor];
+
+                List<ActivateArg> activateRegistry = new List<ActivateArg>(registry.activateArgs);
+                foreach (var activate in activateRegistry)
+                {
+                    Remove(interactor, activate);
+                }
+
+                activateRegistry.Clear();
+
+                List<InteractionArg> interactionRegistry = new List<InteractionArg>(registry.interactionArgs);
+                foreach (var interaction in interactionRegistry)
+                {
+                    Remove(interactor, interaction);
+                }
+
+                interactionRegistry.Clear();
             }
         }
+
+        public static event Action<InteractionArg> removedInteraction;
+        public static event Action<ActivateArg> removedActivation;
 
         /// <summary>
         /// Clear the exact <param name="data"></param> interaction
         /// </summary>
-        public static void Remove<T>(Interactor interactor, T data) where T : INullable
+        public static void Remove<T>(Interactor interactor, T data)
         {
             if (InteractionRegistry.Keys.Contains(interactor))
             {
@@ -102,17 +120,19 @@ namespace Cittius.Interaction
                             if (activate.interactor == interactor)
                             {
                                 registry.activateArgs.Remove(activate);
+                                removedActivation?.Invoke(activate);
                                 return;
                             }
                         }
 
                         break;
-                    case IInteract:
+                    case InteractionArg:
                         foreach (var interaction in registry.interactionArgs)
                         {
                             if (interaction.interactor == interactor)
                             {
                                 registry.interactionArgs.Remove(interaction);
+                                removedInteraction?.Invoke(interaction);
                                 return;
                             }
                         }
@@ -122,12 +142,6 @@ namespace Cittius.Interaction
                         return;
                 }
             }
-            else
-            {
-                return;
-            }
-
-            removed?.Invoke();
         }
 
         public static bool FindInteraction(Interactor interactor, out InteractionArg[] interacts)

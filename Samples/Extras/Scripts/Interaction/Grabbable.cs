@@ -13,21 +13,17 @@ namespace Cittius.Interaction.Extras
 
         private void Start()
         {
+            base.Start();
             rb = GetComponent<Rigidbody>();
             interacted += (ctx) =>
             {
-                if (ctx.interactor.TryGetComponent<Interactor>(out Interactor grabber))
-                {
-                    Grab(new GrabArg(grabber, this));
-                }
+                
+                    Grab(new GrabArg(ctx.interactor, this));
             };
 
             stoppedInteraction += (ctx) =>
             {
-                if (ctx.interactor.TryGetComponent<Interactor>(out Interactor grabber))
-                {
-                    Drop(new GrabArg(grabber, this));
-                }
+                    Drop(new GrabArg(ctx.interactor, this));
             };
         }
 

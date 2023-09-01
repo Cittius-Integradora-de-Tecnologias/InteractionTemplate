@@ -57,40 +57,41 @@ namespace Cittius.Interaction
             stoppedInteraction += (ctx) => onStoppedInteraction?.Invoke(ctx);
             activated += (ctx) => onActivated?.Invoke(ctx);
             deactivated += (ctx) => onDeactivated?.Invoke(ctx);
-            
-            
         }
 
+        protected void Start()
+        {
+            InteractionManager.registeredInteraction += (arg) =>
+            {
+                if (arg.interacted == (IInteract)this)
+                {
+                    interacted?.Invoke(arg);
+                }
+            };
 
-        // /// <summary>
-        // /// On colide with another Iactivate object, this component will try to trigger interactor to initiate a activation.
-        // /// Else will do nothing
-        // /// </summary>
-        // /// <param name="collision"></param>
-        // private void OnCollisionEnter(Collision collision)
-        // {
-        //     if (collision.collider.attachedRigidbody
-        //         && collision.collider.attachedRigidbody.TryGetComponent<IActivate>(out IActivate activate))
-        //     {
-        //         Interactor interactor = InteractionManager.FindInteractor(this);
-        //         if (interactor)
-        //         {
-        //             interactor.Activate(activate);
-        //         }
-        //     }
-        // }
-        //
-        // private void OnCollisionExit(Collision collision)
-        // {
-        //     if (collision.collider.attachedRigidbody
-        //         && collision.collider.attachedRigidbody.TryGetComponent<IActivate>(out IActivate activate))
-        //     {
-        //         Interactor interactor = InteractionManager.FindInteractor(this);
-        //         if (interactor)
-        //         {
-        //             interactor.CancelActivate();
-        //         }
-        //     }
-        // }
+            InteractionManager.removedInteraction += (arg) =>
+            {
+                if (arg.interacted == (IInteract)this)
+                {
+                    stoppedInteraction?.Invoke(arg);
+                }
+            };
+
+            InteractionManager.registeredActivation += (arg) =>
+            {
+                if (arg.activated == (IActivate)this)
+                {
+                    activated?.Invoke(arg);
+                }
+            };
+
+            InteractionManager.removedActivation += (arg) =>
+            {
+                if (arg.activated == (IActivate)this)
+                {
+                    deactivated?.Invoke(arg);
+                }
+            };
+        }
     }
 }

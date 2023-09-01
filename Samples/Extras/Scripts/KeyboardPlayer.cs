@@ -81,7 +81,7 @@ namespace Cittius.Interaction.Extras
         {
             if (Input.mousePosition.magnitude > 0.1f)
             {
-                currentRotation += GetMouseDelta() * rotationSpeed * Time.fixedDeltaTime;
+                currentRotation += GetMouseDelta() * (rotationSpeed * Time.fixedDeltaTime);
                 currentRotation.x = Mathf.Clamp(currentRotation.x, -90f, 90f);
                 currentRotation.z = 0;
                 this.transform.eulerAngles = new Vector3(this.transform.eulerAngles.x, currentRotation.y, 0);
