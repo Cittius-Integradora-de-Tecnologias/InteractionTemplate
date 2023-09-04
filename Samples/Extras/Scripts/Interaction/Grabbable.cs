@@ -17,7 +17,6 @@ namespace Cittius.Interaction.Extras
             rb = GetComponent<Rigidbody>();
             interacted += (ctx) =>
             {
-                
                     Grab(new GrabArg(ctx.interactor, this));
             };
 

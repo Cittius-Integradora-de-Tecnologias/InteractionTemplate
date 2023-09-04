@@ -76,28 +76,38 @@ namespace Cittius.Interaction
 
         /// <summary>
         ///  Clear all <param name="interactor"></param> interactions
+        ///  the clear <param name="mode"></param> can be informed by those velow this description:
+        ///  0 = All
+        ///  1 = Interactions
+        ///  2 = Activations
         /// </summary>
-        public static void Clear(Interactor interactor)
+        public static void Clear(Interactor interactor, int mode = 0)
         {
             if (InteractionRegistry.Keys.Contains(interactor))
             {
                 RegistryData registry = InteractionRegistry[interactor];
 
-                List<ActivateArg> activateRegistry = new List<ActivateArg>(registry.activateArgs);
-                foreach (var activate in activateRegistry)
+                if (mode == 0 || mode == 2)
                 {
-                    Remove(interactor, activate);
+                    List<ActivateArg> activateRegistry = new List<ActivateArg>(registry.activateArgs);
+                    foreach (var activate in activateRegistry)
+                    {
+                        Remove(interactor, activate);
+                    }
+
+                    activateRegistry.Clear();
                 }
 
-                activateRegistry.Clear();
-
-                List<InteractionArg> interactionRegistry = new List<InteractionArg>(registry.interactionArgs);
-                foreach (var interaction in interactionRegistry)
+                if (mode == 0 || mode == 1)
                 {
-                    Remove(interactor, interaction);
-                }
+                    List<InteractionArg> interactionRegistry = new List<InteractionArg>(registry.interactionArgs);
+                    foreach (var interaction in interactionRegistry)
+                    {
+                        Remove(interactor, interaction);
+                    }
 
-                interactionRegistry.Clear();
+                    interactionRegistry.Clear();
+                }
             }
         }
 
@@ -149,7 +159,7 @@ namespace Cittius.Interaction
             interacts = InteractionRegistry.Keys.Contains(interactor)
                 ? InteractionRegistry[interactor].interactionArgs.ToArray()
                 : null;
-            return interacts == null;
+            return interacts != null;
         }
 
         /// <summary>

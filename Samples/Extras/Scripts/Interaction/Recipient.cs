@@ -73,31 +73,32 @@ namespace Cittius.Interaction.Extras
             interact.activated += (arg) =>
             {
                 if (canBeAdded)
-                { 
-                    tranferenceCoroutine = StartCoroutine(StartTransference(arg, 1f));
+                {
+                    if (InteractionManager.FindInteraction(arg.interactor, out InteractionArg[] interacts))
+                    {
+                        GameObject interacted = interacts.First().interacted.transform.gameObject;
+                        if (interacted.TryGetComponent(out Recipient recipient))
+                        {
+                            tranferenceCoroutine = StartCoroutine(StartTransference(recipient, 1f));
+                        }
+                    }
                 }
             };
 
             interact.deactivated += (arg) => { StopTransference(arg); };
         }
 
-        private IEnumerator StartTransference(ActivateArg args, float delay)
+        private IEnumerator StartTransference(Recipient recipient, float delay)
         {
-            if (InteractionManager.FindActivity(args.interactor, out ActivateArg[] activateArg)
-                && activateArg[0].activated.transform.TryGetComponent<Recipient>(out Recipient recipient)
-                && recipient.storedContents.Count > 0)
+            RecipientArg recipientArg = new RecipientArg(recipient, this, m_tranferenceAmount);
+            while (recipient.GetQuantity() > 0)
             {
-                RecipientArg recipientArg = new RecipientArg(recipient, this, m_tranferenceAmount);
-                while (recipient.GetQuantity() > 0)
-                {
-                    ReceiveTransference(recipient, transferenceAmount);
-                    onStartTranference?.Invoke(recipientArg);
-                    yield return new WaitForSeconds(delay);
-                }
-
-                StopTransference(args);
+                ReceiveTransference(recipientArg);
+                onStartTranference?.Invoke(recipientArg);
+                yield return new WaitForSeconds(delay);
             }
 
+            // StopTransference(recipientArg);
             yield return null;
         }
 
@@ -122,14 +123,15 @@ namespace Cittius.Interaction.Extras
         /// this method will try to transfer it first content to all activated recipients
         /// </summary>
         /// <param name="args"></param>
-        public void ReceiveTransference(Recipient other, int transferenceAmount)
+        public void ReceiveTransference(RecipientArg arg)
         {
-            if (other.m_storedContents.Count() > 0)
+            if (arg.drained.GetQuantity() > 0)
             {
-                RecipientContent repContent = other.m_storedContents.Last();
-                if (other.isInfinite || other.TryRemoveContent(repContent.content, false, transferenceAmount))
+                RecipientContent repContent = arg.drained.m_storedContents.Last();
+                if (arg.drained.isInfinite ||
+                    arg.drained.TryRemoveContent(repContent.content, false, transferenceAmount))
                 {
-                    TryAddContent(repContent.content, transferenceAmount);
+                    arg.filled.TryAddContent(repContent.content, transferenceAmount);
                 }
             }
         }

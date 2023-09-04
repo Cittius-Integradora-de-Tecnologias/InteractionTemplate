@@ -44,7 +44,7 @@ namespace Cittius.Interaction
 
         public void CancelActivate()
         {
-            InteractionManager.Clear(this);
+            InteractionManager.Clear(this, 2);
         }
 
         //Interaction
@@ -75,7 +75,7 @@ namespace Cittius.Interaction
 
         public void CancelInteraction()
         {
-            InteractionManager.Clear(this);
+            InteractionManager.Clear(this, 1);
         }
 
         //Interaction By Collision
