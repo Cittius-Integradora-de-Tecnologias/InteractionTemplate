@@ -6,17 +6,8 @@ namespace Cittius.Interaction
     public class Interactor : MonoBehaviour
     {
         [SerializeField] private bool interactOnCollision;
-
-        //Attach references
-        [SerializeField] private Transform m_attach;
-
-        public Transform attach
-        {
-            get { return m_attach; }
-        }
-
+        
         //Activate
-
         public void Activate(ActivateArg arg)
         {
             InteractionManager.Add(arg);
