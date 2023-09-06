@@ -47,7 +47,6 @@ namespace Cittius.Interaction.Data
             UpdateItemInstanceList();
 
             SceneManager.sceneLoaded += (scn, md) => { UpdateItemInstanceList(); };
-            Debug.Log("Hello");
         }
 
 

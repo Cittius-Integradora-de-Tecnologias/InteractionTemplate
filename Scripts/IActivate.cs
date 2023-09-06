@@ -11,7 +11,7 @@ namespace Cittius.Interaction
         public event Action<ActivateArg> deactivated;
         public Transform transform { get; }
 
-        public void Activate(ActivateArg args);
-        public void Deactivate(ActivateArg args);
+        protected void Activate(ActivateArg args);
+        protected void Deactivate(ActivateArg args);
     }
 }
