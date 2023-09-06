@@ -194,7 +194,7 @@ namespace Cittius.Interaction
             arg = InteractionRegistry.Keys.Contains(interactor)
                 ? InteractionRegistry[interactor].activateArgs.ToArray()
                 : null;
-            return arg == null;
+            return arg != null;
         }
     }
 }

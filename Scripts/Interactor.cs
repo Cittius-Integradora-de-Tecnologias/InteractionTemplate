@@ -73,41 +73,41 @@ namespace Cittius.Interaction
 
         #region Collision
 
-        private void OnCollisionEnter(Collision collision)
-        {
-            InteractCollision(collision.collider);
-        }
-
-        private void OnCollisionExit(Collision collision)
-        {
-            CancelInteractByCollision(collision.collider);
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            InteractCollision(other);
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            CancelInteractByCollision(other);
-        }
-
-        public void InteractCollision(Collider collision)
-        {
-            if (ValidateCollision<IInteract>(collision, out IInteract interact))
-            {
-                Interact(new InteractionArg(this, interact));
-            }
-        }
-
-        public void CancelInteractByCollision(Collider collision)
-        {
-            if (ValidateCollision<IInteract>(collision, out IInteract interact))
-            {
-                CancelInteraction();
-            }
-        }
+        // private void OnCollisionEnter(Collision collision)
+        // {
+        //     InteractCollision(collision.collider);
+        // }
+        //
+        // private void OnCollisionExit(Collision collision)
+        // {
+        //     CancelInteractByCollision(collision.collider);
+        // }
+        //
+        // private void OnTriggerEnter(Collider other)
+        // {
+        //     InteractCollision(other);
+        // }
+        //
+        // private void OnTriggerExit(Collider other)
+        // {
+        //     CancelInteractByCollision(other);
+        // }
+        //
+        // public void InteractCollision(Collider collision)
+        // {
+        //     if (ValidateCollision<IInteract>(collision, out IInteract interact))
+        //     {
+        //         Interact(new InteractionArg(this, interact));
+        //     }
+        // }
+        //
+        // public void CancelInteractByCollision(Collider collision)
+        // {
+        //     if (ValidateCollision<IInteract>(collision, out IInteract interact))
+        //     {
+        //         CancelInteraction();
+        //     }
+        // }
 
         private bool ValidateCollision<T>(Collider collision, out T component)
         {
